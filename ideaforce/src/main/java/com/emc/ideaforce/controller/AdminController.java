@@ -8,6 +8,8 @@ import com.emc.ideaforce.service.CommonService;
 import com.emc.ideaforce.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +25,10 @@ import java.util.Base64;
 import java.util.List;
 
 import static com.emc.ideaforce.utils.Utils.ADMIN_ROLE;
+
+import java.util.stream.Collectors; 
+import java.util.stream.Stream;
+import java.util.stream.IntStream;
 
 @Controller
 @RequiredArgsConstructor
@@ -41,12 +47,17 @@ public class AdminController {
     private final UserService userService;
 
     @RolesAllowed(ADMIN_ROLE)
-    @GetMapping(value = "/admin")
-    public ModelAndView showAdminPage() {
-        List<Story> unApprovedChallengeDetailList = commonService.getUnapprovedStories();
-
+    @GetMapping(value = "/admin/{pageid}")
+    public ModelAndView showAdminPage(@PathVariable int pageid) {
+        PageRequest pageable = PageRequest.of(pageid - 1, 1);
+        Page<Story> unApprovedChallengeDetailList = commonService.getUnapprovedStories(pageable);
         ModelAndView mv = new ModelAndView(ADMIN);
-        mv.addObject(UNAPPROVED_CHALLENGES, unApprovedChallengeDetailList);
+        int totalPages = unApprovedChallengeDetailList.getTotalPages();
+        if(totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1,totalPages).boxed().collect(Collectors.toList());
+            mv.addObject("pageNumbers", pageNumbers);
+        } 
+        mv.addObject(UNAPPROVED_CHALLENGES, unApprovedChallengeDetailList);       
         return mv;
     }
 
@@ -65,13 +76,6 @@ public class AdminController {
         return new ModelAndView(ADD_COMMENTS_VIEW, model);
     }
 
-    @PostMapping(value = "/addcomments")
-    public ModelAndView addCommentsForStory(Principal principal,
-            @ModelAttribute("newcomment") CommentDto commentModel) {
-        User currentUser = userService.getUser(principal.getName());
-        commonService.saveStoryComment(commentModel, currentUser);
-        return showAdminPage();
-    }
 
     @GetMapping(value = "/viewcomments/{id}")
     public ModelAndView viewCommentsForStory(@PathVariable String id) {

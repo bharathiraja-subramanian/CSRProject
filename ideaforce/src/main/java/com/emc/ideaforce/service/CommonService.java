@@ -11,8 +11,12 @@ import com.emc.ideaforce.repository.ChallengerCountProjection;
 import com.emc.ideaforce.repository.StoryCommentRepository;
 import com.emc.ideaforce.repository.StoryRepository;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -81,8 +85,8 @@ public class CommonService {
         return storyRepository.findByUserEqualsAndApprovedIsTrue(userId);
     }
 
-    public List<Story> getUnapprovedStories() {
-        return storyRepository.findByApprovedIsFalse();
+    public Page<Story> getUnapprovedStories(Pageable pageable) {
+        return storyRepository.findByApprovedIsFalse(pageable);
     }
 
     public int getApprovedStoriesCount() {
@@ -115,7 +119,7 @@ public class CommonService {
 
     public List<ChallengeCount> getTopTenChallengers() {
         List<ChallengeCount> challengeCounts = new ArrayList<>();
-        List<ChallengerCountProjection> challengers = storyRepository.findUsersWithStoryCount(PageRequest.of(0, 20));
+        List<ChallengerCountProjection> challengers = storyRepository.findUsersWithStoryCount(PageRequest.of(0, 50));
         if (!isEmpty(challengers)) {
             for (ChallengerCountProjection challengerCountProjection : challengers) {
                 challengeCounts.add(new ChallengeCount(userService.getUser(challengerCountProjection.getUserId()),
