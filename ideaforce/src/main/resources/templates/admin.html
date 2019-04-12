@@ -11,9 +11,9 @@
     <div th:replace="common/header :: header('admin')"></div>
 </header>
 <div class="container main">
-    <h2>Pending Challenges</h2>
-    <table class="table" border="1">
-        <thead class="thead-light">
+    <h2 class="text-center">Admin Page</h2>
+    <table border="1" cellpadding="10">
+        <thead>
             <th>Challenge Name</th>
             <th>User</th>
             <th>User Location</th>
@@ -29,10 +29,10 @@
             <td th:text="${#strings.capitalize(unapprovedchallenge.user.firstName) + ' ' + #strings.capitalize(unapprovedchallenge.user.lastName)}"></td>
             <td th:text="${#strings.capitalize(unapprovedchallenge.user.userLocation)}"></td>
             <td th:text="${unapprovedchallenge.approved}"></td>
-            <td><a class="btn btn-outline-primary text-primary" style="padding:2px; background-color: white;" th:href="@{'/approve/'+ ${unapprovedchallenge.id}}">Approve</a></td>
-            <td><a class="btn btn-outline-primary text-primary" style="padding:2px; background-color: white;" th:href="@{'/addcomments/'+ ${unapprovedchallenge.id}}">Add Comments</a></td>
-            <td><a class="btn btn-outline-primary text-primary" style="padding:2px; background-color: white;" th:href="@{'/viewcomments/'+ ${unapprovedchallenge.id}}">View Comments</a></td>
-            <td><a class="btn btn-outline-primary text-primary" style="padding:2px; background-color: white;" th:href="@{'/viewdetails/'+ ${unapprovedchallenge.id}}">View Details</a></td>
+            <td><a class="info" style="padding:2px;" th:href="@{'/approve/'+ ${unapprovedchallenge.id}}">Approve</a></td>
+            <td><a class="info" style="padding:2px;" th:href="@{'/addcomments/'+ ${unapprovedchallenge.id}}">Add Comments</a></td>
+            <td><a class="info" style="padding:2px;" th:href="@{'/viewcomments/'+ ${unapprovedchallenge.id}}">View Comments</a></td>
+            <td><a class="info" style="padding:2px;" th:href="@{'/viewdetails/'+ ${unapprovedchallenge.id}}">View Details</a></td>
         </tr>
     </table>
 </div>

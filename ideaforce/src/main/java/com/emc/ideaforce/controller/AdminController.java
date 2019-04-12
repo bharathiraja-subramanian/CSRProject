@@ -82,7 +82,7 @@ public class AdminController {
     }
 
     @GetMapping(value = "viewdetails/{id}")
-    public ModelAndView getStoryDetails(@PathVariable String id) {
+    public ModelAndView getStoryDetails(Principal principal,@PathVariable String id) {
         Story storyObj = commonService.getStoryById(id);
         List<StoryImage> images = storyObj.getImages();
         List<String> encodedImages = new ArrayList<>();
@@ -92,6 +92,7 @@ public class AdminController {
         ModelAndView mvObject = new ModelAndView(VIEW_STORY_DETAILS_VIEW);
         mvObject.addObject("storyDetails", storyObj);
         mvObject.addObject("storyPics", encodedImages);
+        mvObject.addObject("user",principal.getName());
         return mvObject;
     }
 

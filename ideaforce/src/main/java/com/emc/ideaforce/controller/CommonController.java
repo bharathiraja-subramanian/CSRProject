@@ -4,6 +4,8 @@ import com.emc.ideaforce.model.ChallengeCount;
 import com.emc.ideaforce.model.ChallengeDetail;
 import com.emc.ideaforce.model.Story;
 import com.emc.ideaforce.model.StoryImage;
+import com.emc.ideaforce.model.Event;
+import com.emc.ideaforce.model.User;
 import com.emc.ideaforce.service.CommonService;
 import com.emc.ideaforce.service.UserService;
 import com.emc.ideaforce.utils.CommonException;
@@ -58,7 +60,7 @@ public class CommonController {
         int approvedStories = commonService.getApprovedStoriesCount();
 
         int totalSteps = 65000000;
-        int stepsTaken = approvedStories * 6000;
+        int stepsTaken = approvedStories * 17500;
 
         int goalStatus = (int) Math.ceil((stepsTaken * 100f) / totalSteps);
         goalStatus = goalStatus > 100 ? 100 : goalStatus;
@@ -161,7 +163,7 @@ public class CommonController {
 
         try {
             List<Story> latestChallenges = commonService.getLatestChallengesUndertaken();
-
+             mv.addObject("stories", latestChallenges);
             // get first image from every story/challenge taken
             List<String> images = latestChallenges.stream()
                     .map(Story::getImages)
@@ -171,6 +173,8 @@ public class CommonController {
                     .collect(Collectors.toList());
 
             mv.addObject("latestChallenges", images);
+            List<Event> events = commonService.getEventsList();
+            mv.addObject("events", events);
         }
         catch (Exception ex) {
             String errorMsg = "Failed to get latest challenges undertaken";

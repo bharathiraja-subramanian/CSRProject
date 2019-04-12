@@ -40,7 +40,13 @@
                     <select th:field="*{userLocation}" class="form-control mx-sm-3 mb-2" required autofocus>
                         <option th:value="''" th:text="'Select Location'" selected></option>
                         <option th:value="'Bangalore'" th:text="'Bangalore'"></option>
+                        <option th:value="'Beijing'" th:text="'Beijing'"></option>
+                        <option th:value="'Cairo'" th:text="'Cairo'"></option>
+                        <option th:value="'Chengdu'" th:text="'Chengdu'"></option>
+                        <option th:value="'Cork'" th:text="'Cork'"></option>
+                        <option th:value="'Israel'" th:text="'Israel'"></option>
                         <option th:value="'Pune'" th:text="'Pune'"></option>
+                        <option th:value="'Shanghai'" th:text="'Shanghai'"></option>
                     </select>
                     <p class="error-list" th:each="error : ${#fields.errors('userLocation')}" th:text="${error}">Validation error</p>
                 </div>

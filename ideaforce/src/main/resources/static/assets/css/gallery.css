@@ -290,3 +290,8 @@ figure img:hover{
     transition:all .2s ease-in-out
 
 }
+.eventtitle{
+   background-color:green;
+   background-size: 100px;
+   color:blue;
+}

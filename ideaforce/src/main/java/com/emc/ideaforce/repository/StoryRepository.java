@@ -14,7 +14,7 @@ public interface StoryRepository extends JpaRepository<Story, String> {
 
     List<Story> findByApprovedIsFalse();
 
-    List<Story> findTop20ByApprovedIsTrueOrderByLastUpdatedDesc();
+    List<Story> findTop50ByApprovedIsTrueOrderByLastUpdatedDesc();
 
     @Query("SELECT s FROM Story s JOIN s.user u WHERE u.email = :email")
     List<Story> findByUserEquals(@Param("email") String userId);

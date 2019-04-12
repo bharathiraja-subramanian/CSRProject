@@ -10,6 +10,8 @@ import com.emc.ideaforce.repository.ChallengeDetailRepository;
 import com.emc.ideaforce.repository.ChallengerCountProjection;
 import com.emc.ideaforce.repository.StoryCommentRepository;
 import com.emc.ideaforce.repository.StoryRepository;
+import com.emc.ideaforce.model.Event;
+import com.emc.ideaforce.repository.EventRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -34,6 +36,7 @@ public class CommonService {
 
     private final UserService userService;
 
+    private final EventRepository eventRepository;
     /**
      * Returns the global Challenges list
      */
@@ -74,7 +77,7 @@ public class CommonService {
      * Get the latest/recent challenges taken by users
      */
     public List<Story> getLatestChallengesUndertaken() {
-        return storyRepository.findTop20ByApprovedIsTrueOrderByLastUpdatedDesc();
+        return storyRepository.findTop50ByApprovedIsTrueOrderByLastUpdatedDesc();
     }
 
     public List<Story> getApprovedStories(String userId) {
@@ -123,5 +126,12 @@ public class CommonService {
             }
         }
         return challengeCounts;
+    }
+    /**
+     * Returns the global events list
+     */
+    public List<Event> getEventsList() {
+        List<Event> eventDetails = eventRepository.findAll();
+        return eventDetails;
     }
 }
